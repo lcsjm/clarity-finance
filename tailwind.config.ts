@@ -47,6 +47,11 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        serasa: {
+          magenta: "hsl(var(--serasa-magenta))",
+          dark: "hsl(var(--serasa-dark))",
+          gray: "hsl(var(--serasa-gray))",
+        },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
