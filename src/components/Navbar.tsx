@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const navLinks = [
   { label: "Início", href: "#hero" },
@@ -9,6 +10,7 @@ const navLinks = [
 
 const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <nav
@@ -48,7 +50,7 @@ const Navbar = () => {
           <button className="btn-serasa px-5 py-2 text-sm font-medium border border-primary text-primary bg-transparent hover:bg-accent">
             Login
           </button>
-          <button className="btn-serasa px-5 py-2 text-sm font-medium bg-primary text-primary-foreground hover:opacity-90">
+          <button onClick={() => navigate("/auth")} className="btn-serasa px-5 py-2 text-sm font-medium bg-primary text-primary-foreground hover:opacity-90">
             Registrar
           </button>
         </div>
@@ -85,7 +87,7 @@ const Navbar = () => {
             <button className="btn-serasa px-4 py-2 text-sm border border-primary text-primary bg-transparent">
               Login
             </button>
-            <button className="btn-serasa px-4 py-2 text-sm bg-primary text-primary-foreground">
+            <button onClick={() => { setMobileOpen(false); navigate("/auth"); }} className="btn-serasa px-4 py-2 text-sm bg-primary text-primary-foreground">
               Registrar
             </button>
           </div>

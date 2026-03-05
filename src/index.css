@@ -141,4 +141,29 @@
   .btn-serasa:active {
     @apply shadow-sm translate-y-0;
   }
+
+  .auth-gradient-bg {
+    background: linear-gradient(
+      135deg,
+      #0a0e1a 0%,
+      #1D4F91 25%,
+      #77127B 50%,
+      #C1188B 75%,
+      #0a0e1a 100%
+    );
+    background-size: 400% 400%;
+    animation: gradientShift 20s ease infinite;
+  }
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translate(0, 0); }
+  33% { transform: translate(30px, -20px); }
+  66% { transform: translate(-20px, 20px); }
 }
