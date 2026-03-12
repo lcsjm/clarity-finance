@@ -116,7 +116,7 @@ const Chatbot = ({ financialData, compact }: { financialData: FinancialData | nu
   };
 
   return (
-    <div className="w-full max-w-[800px] mx-auto bg-card rounded-lg card-shadow overflow-hidden flex flex-col" style={{ height: 500 }}>
+    <div className={`w-full ${compact ? "" : "max-w-[800px]"} mx-auto bg-card rounded-lg ${compact ? "" : "card-shadow"} overflow-hidden flex flex-col`} style={{ height: compact ? "100%" : 500 }}>
       <div className="bg-primary text-primary-foreground px-6 py-4 flex items-center gap-3">
         <Bot className="w-6 h-6" />
         <div>
