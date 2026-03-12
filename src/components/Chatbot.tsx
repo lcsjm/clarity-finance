@@ -70,7 +70,7 @@ const responses: Record<string, string> = {
   "divida": "Para sair das dívidas: 1) Liste todas as dívidas. 2) Priorize as de maior juros. 3) Negocie condições. 4) Evite novas dívidas. 5) Considere a portabilidade de crédito.",
 };
 
-const Chatbot = ({ financialData }: { financialData: FinancialData | null }) => {
+const Chatbot = ({ financialData, compact }: { financialData: FinancialData | null; compact?: boolean }) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [initialized, setInitialized] = useState(false);
