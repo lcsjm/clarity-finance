@@ -3,7 +3,8 @@ import Navbar from "@/components/Navbar";
 import HeroCarousel from "@/components/HeroCarousel";
 import FinancialWizard from "@/components/FinancialWizard";
 import FinancialResults from "@/components/FinancialResults";
-import Chatbot from "@/components/Chatbot";
+import AssistantSection from "@/components/AssistantSection";
+import ChatbotWidget from "@/components/ChatbotWidget";
 import EducationSections from "@/components/EducationSections";
 
 interface FinancialData {
@@ -16,6 +17,7 @@ interface FinancialData {
 
 const Index = () => {
   const [financialData, setFinancialData] = useState<FinancialData | null>(null);
+  const [isChatbotFloating, setIsChatbotFloating] = useState(false);
 
   return (
     <div className="min-h-screen bg-background">
@@ -50,18 +52,22 @@ const Index = () => {
           </div>
         </section>
 
-        {/* Chatbot */}
-        <section id="chatbot" className="w-full py-16 bg-secondary/30">
-          <div className="max-w-[1366px] mx-auto px-[3%]">
-            <div className="text-center mb-8">
-              <h2 className="text-3xl font-bold text-foreground mb-2">Assistente Financeiro</h2>
-              <p className="text-muted-foreground">Converse com nosso chatbot para dicas personalizadas</p>
-            </div>
-            <Chatbot financialData={financialData} />
-          </div>
-        </section>
+        {/* Assistant Section — 3 columns Instagram Stories */}
+        <AssistantSection
+          financialData={financialData}
+          isChatbotFloating={isChatbotFloating}
+          onFloatChatbot={setIsChatbotFloating}
+        />
 
-        {/* Education Sections 4, 5, 6 */}
+        {/* Floating Chatbot Widget */}
+        {isChatbotFloating && (
+          <ChatbotWidget
+            financialData={financialData}
+            onDock={() => setIsChatbotFloating(false)}
+          />
+        )}
+
+        {/* Education Sections */}
         <EducationSections />
 
         {/* Footer */}

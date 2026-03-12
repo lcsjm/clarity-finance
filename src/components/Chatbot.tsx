@@ -70,7 +70,7 @@ const responses: Record<string, string> = {
   "divida": "Para sair das dívidas: 1) Liste todas as dívidas. 2) Priorize as de maior juros. 3) Negocie condições. 4) Evite novas dívidas. 5) Considere a portabilidade de crédito.",
 };
 
-const Chatbot = ({ financialData }: { financialData: FinancialData | null }) => {
+const Chatbot = ({ financialData, compact }: { financialData: FinancialData | null; compact?: boolean }) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [initialized, setInitialized] = useState(false);
@@ -116,7 +116,7 @@ const Chatbot = ({ financialData }: { financialData: FinancialData | null }) => 
   };
 
   return (
-    <div className="w-full max-w-[800px] mx-auto bg-card rounded-lg card-shadow overflow-hidden flex flex-col" style={{ height: 500 }}>
+    <div className={`w-full ${compact ? "" : "max-w-[800px]"} mx-auto bg-card rounded-lg ${compact ? "" : "card-shadow"} overflow-hidden flex flex-col`} style={{ height: compact ? "100%" : 500 }}>
       <div className="bg-primary text-primary-foreground px-6 py-4 flex items-center gap-3">
         <Bot className="w-6 h-6" />
         <div>
