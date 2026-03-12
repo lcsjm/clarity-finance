@@ -280,38 +280,44 @@ const AssistantSection = ({
         </div>
 
         <div
-          className={`grid gap-6 ${
+          className={`grid gap-6 items-center justify-items-center ${
             isChatbotFloating
               ? "grid-cols-1 md:grid-cols-2"
               : "grid-cols-1 md:grid-cols-3"
           }`}
         >
           {/* Column 1 — Renegociação */}
-          <StoryCard slides={col1Slides} revealDelay={0} />
+          <div className="w-full max-w-[400px]">
+            <StoryCard slides={col1Slides} revealDelay={0} />
+          </div>
 
           {/* Column 2 — Chatbot (if not floating) */}
           {!isChatbotFloating && (
-            <div
-              className="relative rounded-2xl overflow-hidden flex flex-col"
-              style={{ aspectRatio: "9/16", maxHeight: 520 }}
-            >
-              <div className="absolute top-3 right-3 z-20">
-                <button
-                  onClick={() => onFloatChatbot(true)}
-                  className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white/30 transition-colors active:scale-95"
-                  title="Destacar chatbot"
-                >
-                  <Maximize2 className="w-4 h-4" />
-                </button>
-              </div>
-              <div className="flex-1 flex flex-col">
-                <Chatbot financialData={financialData} compact />
+            <div className="w-full max-w-[400px]">
+              <div
+                className="relative rounded-2xl overflow-hidden flex flex-col"
+                style={{ aspectRatio: "9/16", maxHeight: 520 }}
+              >
+                <div className="absolute top-3 right-3 z-20">
+                  <button
+                    onClick={() => onFloatChatbot(true)}
+                    className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white/30 transition-colors active:scale-95"
+                    title="Destacar chatbot"
+                  >
+                    <Maximize2 className="w-4 h-4" />
+                  </button>
+                </div>
+                <div className="flex-1 flex flex-col">
+                  <Chatbot financialData={financialData} compact />
+                </div>
               </div>
             </div>
           )}
 
           {/* Column 3 — Amortização */}
-          <StoryCard slides={col3Slides} revealDelay={200} />
+          <div className="w-full max-w-[400px]">
+            <StoryCard slides={col3Slides} revealDelay={200} />
+          </div>
         </div>
       </div>
     </section>
