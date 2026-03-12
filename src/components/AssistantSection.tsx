@@ -258,14 +258,17 @@ const AssistantSection = ({
     <section
       id="chatbot"
       ref={sectionRef}
-      className="w-full py-16 bg-[#0a0e1a]"
+      className="w-full py-16 assistant-section-bg relative overflow-hidden"
       style={{
         opacity: sectionVisible ? 1 : 0,
         transform: sectionVisible ? "scale(1)" : "scale(0.95)",
         transition: "all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)",
       }}
     >
-      <div className="max-w-[1366px] mx-auto px-[3%]">
+      {/* Frosted glass overlay */}
+      <div className="absolute inset-0 backdrop-blur-[2px] bg-black/20" />
+      
+      <div className="max-w-[1366px] mx-auto px-[3%] relative z-10">
         <div className="text-center mb-10">
           <h2
             className="font-bold text-white mb-2"
@@ -277,38 +280,44 @@ const AssistantSection = ({
         </div>
 
         <div
-          className={`grid gap-6 ${
+          className={`grid gap-6 items-center justify-items-center ${
             isChatbotFloating
               ? "grid-cols-1 md:grid-cols-2"
               : "grid-cols-1 md:grid-cols-3"
           }`}
         >
           {/* Column 1 — Renegociação */}
-          <StoryCard slides={col1Slides} revealDelay={0} />
+          <div className="w-full max-w-[400px]">
+            <StoryCard slides={col1Slides} revealDelay={0} />
+          </div>
 
           {/* Column 2 — Chatbot (if not floating) */}
           {!isChatbotFloating && (
-            <div
-              className="relative rounded-2xl overflow-hidden flex flex-col"
-              style={{ aspectRatio: "9/16", maxHeight: 520 }}
-            >
-              <div className="absolute top-3 right-3 z-20">
-                <button
-                  onClick={() => onFloatChatbot(true)}
-                  className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white/30 transition-colors active:scale-95"
-                  title="Destacar chatbot"
-                >
-                  <Maximize2 className="w-4 h-4" />
-                </button>
-              </div>
-              <div className="flex-1 flex flex-col">
-                <Chatbot financialData={financialData} compact />
+            <div className="w-full max-w-[400px]">
+              <div
+                className="relative rounded-2xl overflow-hidden flex flex-col"
+                style={{ aspectRatio: "9/16", maxHeight: 520 }}
+              >
+                <div className="absolute top-3 right-3 z-20">
+                  <button
+                    onClick={() => onFloatChatbot(true)}
+                    className="w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center text-white hover:bg-white/30 transition-colors active:scale-95"
+                    title="Destacar chatbot"
+                  >
+                    <Maximize2 className="w-4 h-4" />
+                  </button>
+                </div>
+                <div className="flex-1 flex flex-col">
+                  <Chatbot financialData={financialData} compact />
+                </div>
               </div>
             </div>
           )}
 
           {/* Column 3 — Amortização */}
-          <StoryCard slides={col3Slides} revealDelay={200} />
+          <div className="w-full max-w-[400px]">
+            <StoryCard slides={col3Slides} revealDelay={200} />
+          </div>
         </div>
       </div>
     </section>
