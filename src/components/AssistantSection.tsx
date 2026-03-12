@@ -258,14 +258,17 @@ const AssistantSection = ({
     <section
       id="chatbot"
       ref={sectionRef}
-      className="w-full py-16 bg-[#0a0e1a]"
+      className="w-full py-16 assistant-section-bg relative overflow-hidden"
       style={{
         opacity: sectionVisible ? 1 : 0,
         transform: sectionVisible ? "scale(1)" : "scale(0.95)",
         transition: "all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1)",
       }}
     >
-      <div className="max-w-[1366px] mx-auto px-[3%]">
+      {/* Frosted glass overlay */}
+      <div className="absolute inset-0 backdrop-blur-[2px] bg-black/20" />
+      
+      <div className="max-w-[1366px] mx-auto px-[3%] relative z-10">
         <div className="text-center mb-10">
           <h2
             className="font-bold text-white mb-2"
