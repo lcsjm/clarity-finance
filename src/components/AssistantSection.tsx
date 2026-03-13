@@ -279,10 +279,10 @@ const AssistantSection = ({
         </div>
 
         <div
-          className={`grid gap-6 items-center justify-items-center ${
+          className={`grid items-center justify-items-center ${
             isChatbotFloating
-              ? "grid-cols-1 md:grid-cols-2"
-              : "grid-cols-1 md:[grid-template-columns:1fr_2fr_1fr]"
+              ? "grid-cols-1 md:grid-cols-2 gap-6"
+              : "grid-cols-1 md:[grid-template-columns:22%_50%_22%] md:gap-[3%]"
           }`}
         >
           {/* Column 1 — Renegociação (25%) */}
