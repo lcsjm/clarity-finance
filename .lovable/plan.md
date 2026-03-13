@@ -1,22 +1,57 @@
 
-# Ajustes na Seção Assistente Financeiro
 
-## Problemas Identificados
-1. O chatbot (coluna 2) usa `aspectRatio: "9/16"` que o torna muito alto. As 3 colunas devem ter a **mesma altura**, com larguras de 25% / 50% / 25%.
-2. Os textos sobre as imagens nos StoryCards precisam de fundo cinza para legibilidade.
+# Alteracoes na Landing Page
 
-## Alterações em `src/components/AssistantSection.tsx`
+## 1. Hero Carousel - Imagens de fundo
+Adicionar imagens ilustrativas de fundo em cada slide do carrossel. Como nao temos imagens reais, usaremos SVG patterns/ilustracoes inline combinadas com os gradientes existentes para criar fundos visuais mais ricos (icones grandes semi-transparentes relacionados ao tema de cada slide). O conteudo textual permanece inalterado.
 
-### 1. Grid com larguras 25% / 50% / 25%
-- Mudar o grid template de `22%_50%_22%` para `25%_50%_25%` (sem gap separado, ou `1fr 2fr 1fr`)
-- Usar `md:[grid-template-columns:1fr_2fr_1fr]` com `md:gap-4`
+## 2. Remover Piramide de Maslow da Secao 2
+Remover o bloco "Piramide de Maslow Financeira" do `FinancialResults.tsx` (linhas 109-130), mantendo os cards de resumo, grafico de pizza e grafico de barras 50/30/20.
 
-### 2. Chatbot com mesma altura das StoryCards
-- Manter `aspectRatio: "9/16"` em todas as 3 colunas para que fiquem do mesmo tamanho (a largura maior do chatbot naturalmente o tornará mais alto proporcionalmente — isso é o esperado com 9:16)
-- Alternativa: usar uma altura fixa igual para as 3 colunas, ou trocar para `items-stretch` no grid para que todas tenham a mesma altura
+## 3. Secao 4 - Reestruturar como FAQ em 3 colunas
+Substituir completamente o `EducationSections.tsx` por uma unica secao com:
 
-### 3. Fundo cinza nos textos das imagens
-- No `StoryCard`, adicionar `bg-black/50 backdrop-blur-sm rounded-lg p-3` ao container de texto (linha 201) que contém título, descrição e botão
+- Titulo `<h2>` "Educacao Financeira"
+- Layout de 3 colunas (33.333% cada)
+- Cada coluna usa o componente `Accordion` (Radix UI, ja instalado) no estilo FAQ
 
-## Arquivos editados
-- `src/components/AssistantSection.tsx` apenas
+**Coluna 1 - Investimentos:**
+1. Educacao
+2. Liquidez diaria
+3. Poupanca
+4. Patrimonio
+5. Acoes
+6. Empreendimento
+
+**Coluna 2 - Conceitos:**
+1. Inflacao
+2. CDB e CDI
+3. Taxas e juros
+4. Emprestimos
+5. Amortizacao
+
+**Coluna 3 - Protecao:**
+1. Reserva de Emergencia
+2. Piramide de Maslow
+
+Cada item do FAQ tera titulo clicavel e conteudo explicativo que expande ao clicar.
+
+## Detalhes Tecnicos
+
+### HeroCarousel.tsx
+- Adicionar elementos SVG decorativos (circulos, linhas, icones) como background em cada slide, posicionados com `absolute` e `opacity` baixa para nao interferir no texto
+
+### FinancialResults.tsx
+- Remover linhas 46-52 (array `maslowLevels`)
+- Remover linhas 109-130 (JSX da piramide)
+
+### EducationSections.tsx
+- Reescrever completamente usando o componente `Accordion` de `@/components/ui/accordion`
+- Uma unica `<section>` com `<h2>Educacao Financeira</h2>`
+- Grid de 3 colunas responsivo (`grid-cols-1 md:grid-cols-3`)
+- Cada coluna contem um `Accordion` com os itens FAQ correspondentes
+- Mover o conteudo da Piramide de Maslow (anteriormente na secao 2) para o FAQ da coluna 3
+
+### Index.tsx
+- Atualizar links de navegacao na navbar se necessario (remover ancoras para secoes que nao existem mais como "como-funciona" e "reserva")
+

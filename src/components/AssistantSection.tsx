@@ -198,7 +198,7 @@ const StoryCard = ({
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-              <div className="absolute bottom-16 left-4 right-4 text-white z-10">
+              <div className="absolute bottom-16 left-4 right-4 text-white z-10 bg-black/50 backdrop-blur-sm rounded-lg p-3">
                 <h3
                   className="font-bold mb-2 leading-tight"
                   style={{ fontSize: "clamp(1.1rem, 2vw, 1.5rem)" }}
@@ -279,10 +279,10 @@ const AssistantSection = ({
         </div>
 
         <div
-          className={`grid items-center justify-items-center ${
+          className={`grid items-stretch justify-items-center ${
             isChatbotFloating
               ? "grid-cols-1 md:grid-cols-2 gap-6"
-              : "grid-cols-1 md:[grid-template-columns:22%_50%_22%] md:gap-[3%]"
+              : "grid-cols-1 md:[grid-template-columns:1fr_2fr_1fr] md:gap-4"
           }`}
         >
           {/* Column 1 — Renegociação (25%) */}
