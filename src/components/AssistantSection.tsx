@@ -283,19 +283,19 @@ const AssistantSection = ({
           className={`grid gap-6 items-center justify-items-center ${
             isChatbotFloating
               ? "grid-cols-1 md:grid-cols-2"
-              : "grid-cols-1 md:grid-cols-3"
+              : "grid-cols-1 md:[grid-template-columns:1fr_2fr_1fr]"
           }`}
         >
-          {/* Column 1 — Renegociação */}
-          <div className="w-full max-w-[400px]">
+          {/* Column 1 — Renegociação (25%) */}
+          <div className="w-full flex justify-center">
             <StoryCard slides={col1Slides} revealDelay={0} />
           </div>
 
-          {/* Column 2 — Chatbot (if not floating) */}
+          {/* Column 2 — Chatbot (50%, if not floating) */}
           {!isChatbotFloating && (
-            <div className="w-full max-w-[400px]">
+            <div className="w-full flex justify-center">
               <div
-                className="relative rounded-2xl overflow-hidden flex flex-col"
+                className="relative rounded-2xl overflow-hidden flex flex-col w-full"
                 style={{ aspectRatio: "9/16", maxHeight: 520 }}
               >
                 <div className="absolute top-3 right-3 z-20">
@@ -314,8 +314,8 @@ const AssistantSection = ({
             </div>
           )}
 
-          {/* Column 3 — Amortização */}
-          <div className="w-full max-w-[400px]">
+          {/* Column 3 — Amortização (25%) */}
+          <div className="w-full flex justify-center">
             <StoryCard slides={col3Slides} revealDelay={200} />
           </div>
         </div>
