@@ -155,10 +155,9 @@ const StoryCard = ({
   return (
     <div
       ref={cardRef}
-      className="relative rounded-2xl overflow-hidden cursor-pointer group"
+      className="relative rounded-2xl overflow-hidden cursor-pointer group w-full"
       style={{
         aspectRatio: "9/16",
-        maxHeight: 520,
         opacity: visible ? 1 : 0,
         transform: visible ? "translateX(0)" : "translateX(40px)",
         transition: `all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1)`,
@@ -296,7 +295,7 @@ const AssistantSection = ({
             <div className="w-full flex justify-center">
               <div
                 className="relative rounded-2xl overflow-hidden flex flex-col w-full"
-                style={{ aspectRatio: "9/16", maxHeight: 520 }}
+                style={{ aspectRatio: "9/16" }}
               >
                 <div className="absolute top-3 right-3 z-20">
                   <button
