@@ -295,7 +295,7 @@ const AssistantSection = ({
             <div className="w-full flex justify-center">
               <div
                 className="relative rounded-2xl overflow-hidden flex flex-col w-full"
-                style={{ aspectRatio: "9/16" }}
+                style={{ aspectRatio: "3/4" }}
               >
                 <div className="absolute top-3 right-3 z-20">
                   <button
