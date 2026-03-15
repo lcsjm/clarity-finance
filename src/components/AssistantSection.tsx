@@ -292,7 +292,7 @@ const AssistantSection = ({
 
           {/* Column 2 — Chatbot (if not floating) */}
           {!isChatbotFloating && (
-            <div className="w-full max-w-[400px]">
+            <div className="w-full">
               <div
                 className="relative rounded-2xl overflow-hidden flex flex-col"
                 style={{ aspectRatio: "9/16", maxHeight: 520 }}
