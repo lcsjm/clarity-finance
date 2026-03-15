@@ -280,14 +280,13 @@ const AssistantSection = ({
         </div>
 
         <div
-          className={`grid gap-6 items-center justify-items-center ${
-            isChatbotFloating
-              ? "grid-cols-1 md:grid-cols-2"
-              : "grid-cols-1 md:grid-cols-3"
+          className={`grid gap-6 items-center justify-items-center grid-cols-1 ${
+            isChatbotFloating ? "md:grid-cols-2" : ""
           }`}
+          style={!isChatbotFloating ? { gridTemplateColumns: '1fr 2fr 1fr' } : undefined}
         >
           {/* Column 1 — Renegociação */}
-          <div className="w-full max-w-[400px]">
+          <div className="w-full">
             <StoryCard slides={col1Slides} revealDelay={0} />
           </div>
 
