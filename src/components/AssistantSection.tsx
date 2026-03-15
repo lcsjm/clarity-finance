@@ -155,9 +155,10 @@ const StoryCard = ({
   return (
     <div
       ref={cardRef}
-      className="relative rounded-2xl overflow-hidden cursor-pointer group w-full"
+      className="relative rounded-2xl overflow-hidden cursor-pointer group"
       style={{
-        aspectRatio: "3/4",
+        aspectRatio: "9/16",
+        maxHeight: 520,
         opacity: visible ? 1 : 0,
         transform: visible ? "translateX(0)" : "translateX(40px)",
         transition: `all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1)`,
@@ -198,7 +199,7 @@ const StoryCard = ({
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-              <div className="absolute bottom-16 left-4 right-4 text-white z-10 bg-black/50 backdrop-blur-sm rounded-lg p-3">
+              <div className="absolute bottom-16 left-4 right-4 text-white z-10">
                 <h3
                   className="font-bold mb-2 leading-tight"
                   style={{ fontSize: "clamp(1.1rem, 2vw, 1.5rem)" }}
@@ -279,23 +280,23 @@ const AssistantSection = ({
         </div>
 
         <div
-          className={`grid items-stretch justify-items-center w-[133%] mx-auto ${
+          className={`grid gap-6 items-center justify-items-center ${
             isChatbotFloating
-              ? "grid-cols-1 md:grid-cols-2 gap-6"
-              : "grid-cols-1 md:[grid-template-columns:1fr_2fr_1fr] md:gap-4"
+              ? "grid-cols-1 md:grid-cols-2"
+              : "grid-cols-1 md:grid-cols-3"
           }`}
         >
-          {/* Column 1 — Renegociação (25%) */}
-          <div className="w-full flex justify-center">
+          {/* Column 1 — Renegociação */}
+          <div className="w-full max-w-[400px]">
             <StoryCard slides={col1Slides} revealDelay={0} />
           </div>
 
-          {/* Column 2 — Chatbot (50%, if not floating) */}
+          {/* Column 2 — Chatbot (if not floating) */}
           {!isChatbotFloating && (
-            <div className="w-full flex justify-center">
+            <div className="w-full max-w-[400px]">
               <div
-                className="relative rounded-2xl overflow-hidden flex flex-col w-full"
-                style={{ aspectRatio: "3/4" }}
+                className="relative rounded-2xl overflow-hidden flex flex-col"
+                style={{ aspectRatio: "9/16", maxHeight: 520 }}
               >
                 <div className="absolute top-3 right-3 z-20">
                   <button
@@ -313,8 +314,8 @@ const AssistantSection = ({
             </div>
           )}
 
-          {/* Column 3 — Amortização (25%) */}
-          <div className="w-full flex justify-center">
+          {/* Column 3 — Amortização */}
+          <div className="w-full max-w-[400px]">
             <StoryCard slides={col3Slides} revealDelay={200} />
           </div>
         </div>
