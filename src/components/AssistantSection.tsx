@@ -193,23 +193,27 @@ const StoryCard = ({
               style={{ width: `${100 / slides.length}%` }}
               onClick={handleClick}
             >
-              <img
-                src={slide.image}
-                alt={slide.title}
-                className="w-full h-full object-cover"
-              />
+              <div className="absolute inset-0 bg-gray-900">
+                <img
+                  src={slide.image}
+                  alt={slide.title}
+                  className="w-full h-full object-contain"
+                />
+              </div>
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-              <div className="absolute bottom-16 left-4 right-4 text-white z-10">
-                <h3
-                  className="font-bold mb-2 leading-tight"
-                  style={{ fontSize: "clamp(1.1rem, 2vw, 1.5rem)" }}
-                >
-                  {slide.title}
-                </h3>
-                <p className="text-sm text-white/80 line-clamp-3">{slide.description}</p>
-                <span className="inline-block mt-3 text-xs font-semibold text-white/90 border border-white/40 rounded-full px-3 py-1 group-hover:bg-white/20 transition-colors">
-                  {slide.isExternal ? "Acessar →" : "Saiba mais →"}
-                </span>
+              <div className="absolute bottom-16 left-4 right-4 z-10">
+                <div className="bg-gray-900/60 backdrop-blur-sm rounded-lg p-3">
+                  <h3
+                    className="font-bold mb-2 leading-tight text-white"
+                    style={{ fontSize: "clamp(1.1rem, 2vw, 1.5rem)" }}
+                  >
+                    {slide.title}
+                  </h3>
+                  <p className="text-sm text-white/80 line-clamp-3">{slide.description}</p>
+                  <span className="inline-block mt-3 text-xs font-semibold text-white/90 border border-white/40 rounded-full px-3 py-1 group-hover:bg-white/20 transition-colors">
+                    {slide.isExternal ? "Acessar →" : "Saiba mais →"}
+                  </span>
+                </div>
               </div>
             </div>
           ))}
