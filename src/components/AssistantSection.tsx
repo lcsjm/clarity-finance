@@ -314,7 +314,7 @@ const AssistantSection = ({
           )}
 
           {/* Column 3 — Amortização */}
-          <div className="w-full max-w-[400px]">
+          <div className="w-full">
             <StoryCard slides={col3Slides} revealDelay={200} />
           </div>
         </div>
