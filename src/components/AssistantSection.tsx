@@ -157,7 +157,7 @@ const StoryCard = ({
       ref={cardRef}
       className="relative rounded-2xl overflow-hidden cursor-pointer group w-full"
       style={{
-        aspectRatio: "9/16",
+        aspectRatio: "3/4",
         opacity: visible ? 1 : 0,
         transform: visible ? "translateX(0)" : "translateX(40px)",
         transition: `all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1)`,
@@ -279,7 +279,7 @@ const AssistantSection = ({
         </div>
 
         <div
-          className={`grid items-stretch justify-items-center origin-top scale-[0.75] ${
+          className={`grid items-stretch justify-items-center w-[133%] mx-auto ${
             isChatbotFloating
               ? "grid-cols-1 md:grid-cols-2 gap-6"
               : "grid-cols-1 md:[grid-template-columns:1fr_2fr_1fr] md:gap-4"
@@ -295,7 +295,7 @@ const AssistantSection = ({
             <div className="w-full flex justify-center">
               <div
                 className="relative rounded-2xl overflow-hidden flex flex-col w-full"
-                style={{ aspectRatio: "9/16" }}
+                style={{ aspectRatio: "3/4" }}
               >
                 <div className="absolute top-3 right-3 z-20">
                   <button
