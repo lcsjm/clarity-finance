@@ -157,7 +157,7 @@ const StoryCard = ({
       ref={cardRef}
       className="relative rounded-2xl overflow-hidden cursor-pointer group w-full"
       style={{
-        aspectRatio: "9/16",
+        aspectRatio: "3/4",
         opacity: visible ? 1 : 0,
         transform: visible ? "translateX(0)" : "translateX(40px)",
         transition: `all 0.7s cubic-bezier(0.34, 1.56, 0.64, 1)`,
