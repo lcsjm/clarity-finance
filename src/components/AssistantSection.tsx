@@ -193,27 +193,23 @@ const StoryCard = ({
               style={{ width: `${100 / slides.length}%` }}
               onClick={handleClick}
             >
-              <div className="absolute inset-0 bg-gray-900">
-                <img
-                  src={slide.image}
-                  alt={slide.title}
-                  className="w-full h-full object-contain"
-                />
-              </div>
+              <img
+                src={slide.image}
+                alt={slide.title}
+                className="w-full h-full object-cover"
+              />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
-              <div className="absolute bottom-16 left-4 right-4 z-10">
-                <div className="bg-gray-900/60 backdrop-blur-sm rounded-lg p-3">
-                  <h3
-                    className="font-bold mb-2 leading-tight text-white"
-                    style={{ fontSize: "clamp(1.1rem, 2vw, 1.5rem)" }}
-                  >
-                    {slide.title}
-                  </h3>
-                  <p className="text-sm text-white/80 line-clamp-3">{slide.description}</p>
-                  <span className="inline-block mt-3 text-xs font-semibold text-white/90 border border-white/40 rounded-full px-3 py-1 group-hover:bg-white/20 transition-colors">
-                    {slide.isExternal ? "Acessar →" : "Saiba mais →"}
-                  </span>
-                </div>
+              <div className="absolute bottom-16 left-4 right-4 text-white z-10">
+                <h3
+                  className="font-bold mb-2 leading-tight"
+                  style={{ fontSize: "clamp(1.1rem, 2vw, 1.5rem)" }}
+                >
+                  {slide.title}
+                </h3>
+                <p className="text-sm text-white/80 line-clamp-3">{slide.description}</p>
+                <span className="inline-block mt-3 text-xs font-semibold text-white/90 border border-white/40 rounded-full px-3 py-1 group-hover:bg-white/20 transition-colors">
+                  {slide.isExternal ? "Acessar →" : "Saiba mais →"}
+                </span>
               </div>
             </div>
           ))}
@@ -284,19 +280,20 @@ const AssistantSection = ({
         </div>
 
         <div
-          className={`grid gap-6 items-center justify-items-center grid-cols-1 ${
-            isChatbotFloating ? "md:grid-cols-2" : ""
+          className={`grid gap-6 items-center justify-items-center ${
+            isChatbotFloating
+              ? "grid-cols-1 md:grid-cols-2"
+              : "grid-cols-1 md:grid-cols-3"
           }`}
-          style={!isChatbotFloating ? { gridTemplateColumns: '1fr 2fr 1fr' } : undefined}
         >
           {/* Column 1 — Renegociação */}
-          <div className="w-full">
+          <div className="w-full max-w-[400px]">
             <StoryCard slides={col1Slides} revealDelay={0} />
           </div>
 
           {/* Column 2 — Chatbot (if not floating) */}
           {!isChatbotFloating && (
-            <div className="w-full">
+            <div className="w-full max-w-[400px]">
               <div
                 className="relative rounded-2xl overflow-hidden flex flex-col"
                 style={{ aspectRatio: "9/16", maxHeight: 520 }}
@@ -318,7 +315,7 @@ const AssistantSection = ({
           )}
 
           {/* Column 3 — Amortização */}
-          <div className="w-full">
+          <div className="w-full max-w-[400px]">
             <StoryCard slides={col3Slides} revealDelay={200} />
           </div>
         </div>
