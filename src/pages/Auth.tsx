@@ -51,6 +51,22 @@ const Auth = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({ email: "", password: "", confirmPassword: "", name: "", cpf: "", cep: "", birthdate: "", gender: "", race: "" });
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [recoveryEmail, setRecoveryEmail] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmNewPassword, setConfirmNewPassword] = useState("");
+
+  // Listener para evento PASSWORD_RECOVERY
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+      if (event === "PASSWORD_RECOVERY") {
+        setStep(-3);
+        setShowPassword(false);
+        setNewPassword("");
+        setConfirmNewPassword("");
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, []);
 
   const updateField = (key: string, value: string) => {
     let v = value;
