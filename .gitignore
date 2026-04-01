@@ -22,3 +22,10 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+debt-renegotiation-platform/
+clarity-finance/
+financial-liberty-guide/
+
+oficial-next-js/
+guilherme-lovable-dashboard/
