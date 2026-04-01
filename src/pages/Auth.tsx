@@ -94,6 +94,54 @@ const Auth = () => {
     setIsLoading(false);
   };
 
+  // --- LÓGICA DE RECUPERAÇÃO DE SENHA ---
+  const handleForgotPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!recoveryEmail) {
+      setErrors({ recoveryEmail: "Informe seu e-mail." });
+      return;
+    }
+    setIsLoading(true);
+    const { error } = await supabase.auth.resetPasswordForEmail(recoveryEmail, {
+      redirectTo: window.location.origin + window.location.pathname,
+    });
+    if (error) {
+      toast({ title: "Erro", description: error.message, variant: "destructive" });
+    } else {
+      toast({ title: "E-mail enviado!", description: "Verifique sua caixa de entrada para redefinir sua senha." });
+    }
+    setIsLoading(false);
+  };
+
+  const handleUpdatePassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const hasLength = newPassword.length >= 8;
+    const hasUpper = /[A-Z]/.test(newPassword);
+    const hasNumber = /[0-9]/.test(newPassword);
+    const hasSpecial = /[^A-Za-z0-9]/.test(newPassword);
+
+    if (!hasLength || !hasUpper || !hasNumber || !hasSpecial) {
+      setErrors({ newPassword: "A senha não atende a todos os requisitos." });
+      return;
+    }
+    if (newPassword !== confirmNewPassword) {
+      setErrors({ confirmNewPassword: "As senhas não coincidem." });
+      return;
+    }
+
+    setIsLoading(true);
+    const { error } = await supabase.auth.updateUser({ password: newPassword });
+    if (error) {
+      toast({ title: "Erro", description: error.message, variant: "destructive" });
+    } else {
+      toast({ title: "Senha atualizada!", description: "Sua senha foi redefinida com sucesso." });
+      setStep(-1);
+      setNewPassword("");
+      setConfirmNewPassword("");
+    }
+    setIsLoading(false);
+  };
+
   // --- LÓGICA DE CADASTRO ---
   const handleNextStep = async () => {
     const currentStep = STEPS[step];
