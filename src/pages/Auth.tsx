@@ -1,7 +1,7 @@
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
-import { Eye, EyeOff, ArrowLeft, ArrowRight, Check, LogIn, UserPlus } from "lucide-react";
+import { Eye, EyeOff, ArrowLeft, ArrowRight, Check, LogIn, UserPlus, Mail, KeyRound } from "lucide-react";
 import supabase from "../../utils/supabase";
 
 const STEPS = [
@@ -51,6 +51,22 @@ const Auth = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({ email: "", password: "", confirmPassword: "", name: "", cpf: "", cep: "", birthdate: "", gender: "", race: "" });
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [recoveryEmail, setRecoveryEmail] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmNewPassword, setConfirmNewPassword] = useState("");
+
+  // Listener para evento PASSWORD_RECOVERY
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+      if (event === "PASSWORD_RECOVERY") {
+        setStep(-3);
+        setShowPassword(false);
+        setNewPassword("");
+        setConfirmNewPassword("");
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, []);
 
   const updateField = (key: string, value: string) => {
     let v = value;
@@ -74,6 +90,54 @@ const Auth = () => {
     } else {
       toast({ title: "Bem-vindo!", description: "Login realizado." });
       navigate("/dashboard");
+    }
+    setIsLoading(false);
+  };
+
+  // --- LÓGICA DE RECUPERAÇÃO DE SENHA ---
+  const handleForgotPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!recoveryEmail) {
+      setErrors({ recoveryEmail: "Informe seu e-mail." });
+      return;
+    }
+    setIsLoading(true);
+    const { error } = await supabase.auth.resetPasswordForEmail(recoveryEmail, {
+      redirectTo: window.location.origin + window.location.pathname,
+    });
+    if (error) {
+      toast({ title: "Erro", description: error.message, variant: "destructive" });
+    } else {
+      toast({ title: "E-mail enviado!", description: "Verifique sua caixa de entrada para redefinir sua senha." });
+    }
+    setIsLoading(false);
+  };
+
+  const handleUpdatePassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const hasLength = newPassword.length >= 8;
+    const hasUpper = /[A-Z]/.test(newPassword);
+    const hasNumber = /[0-9]/.test(newPassword);
+    const hasSpecial = /[^A-Za-z0-9]/.test(newPassword);
+
+    if (!hasLength || !hasUpper || !hasNumber || !hasSpecial) {
+      setErrors({ newPassword: "A senha não atende a todos os requisitos." });
+      return;
+    }
+    if (newPassword !== confirmNewPassword) {
+      setErrors({ confirmNewPassword: "As senhas não coincidem." });
+      return;
+    }
+
+    setIsLoading(true);
+    const { error } = await supabase.auth.updateUser({ password: newPassword });
+    if (error) {
+      toast({ title: "Erro", description: error.message, variant: "destructive" });
+    } else {
+      toast({ title: "Senha atualizada!", description: "Sua senha foi redefinida com sucesso." });
+      setStep(-1);
+      setNewPassword("");
+      setConfirmNewPassword("");
     }
     setIsLoading(false);
   };
@@ -206,6 +270,13 @@ const Auth = () => {
                   </button>
                 </div>
 
+                <div className="flex justify-end">
+                  <button type="button" onClick={() => { setStep(-2); setRecoveryEmail(formData.email); setErrors({}); }}
+                    className="text-white/40 text-sm hover:text-[#E80070] transition-colors">
+                    Esqueci minha senha
+                  </button>
+                </div>
+
                 <MagneticButton type="submit" className="w-full justify-center" disabled={isLoading}>
                   {isLoading ? "Entrando..." : <><LogIn size={18}/> Entrar</>}
                 </MagneticButton>
@@ -217,6 +288,80 @@ const Auth = () => {
                 </button>
               </div>
             </div>
+
+          ) : step === -2 ? (
+            /* --- TELA DE ESQUECI A SENHA --- */
+            <div className="animate-in fade-in zoom-in-95 duration-500">
+              <div className="text-center mb-8">
+                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-white/10 flex items-center justify-center">
+                  <Mail size={28} className="text-[#E80070]" />
+                </div>
+                <h1 className="text-2xl font-bold text-white mb-2">Recuperar Senha</h1>
+                <p className="text-white/50 text-sm">Informe seu e-mail para receber o link de recuperação.</p>
+              </div>
+
+              <form onSubmit={handleForgotPassword} className="space-y-4">
+                <input type="email" placeholder="Seu e-mail" className={inputClass} required autoFocus
+                  value={recoveryEmail} onChange={(e) => { setRecoveryEmail(e.target.value); setErrors({}); }} />
+                {errors.recoveryEmail && <p className="text-[#E80070] text-xs">{errors.recoveryEmail}</p>}
+
+                <MagneticButton type="submit" className="w-full justify-center" disabled={isLoading}>
+                  {isLoading ? "Enviando..." : <><Mail size={18}/> Enviar link de recuperação</>}
+                </MagneticButton>
+              </form>
+
+              <div className="mt-6 pt-6 border-t border-white/10">
+                <MagneticButton variant="secondary" onClick={() => setStep(-1)} className="w-full justify-center">
+                  <ArrowLeft size={18}/> Voltar ao Login
+                </MagneticButton>
+              </div>
+            </div>
+
+          ) : step === -3 ? (
+            /* --- TELA DE NOVA SENHA --- */
+            <div className="animate-in fade-in zoom-in-95 duration-500">
+              <div className="text-center mb-8">
+                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-white/10 flex items-center justify-center">
+                  <KeyRound size={28} className="text-[#E80070]" />
+                </div>
+                <h1 className="text-2xl font-bold text-white mb-2">Nova Senha</h1>
+                <p className="text-white/50 text-sm">Crie sua nova senha abaixo.</p>
+              </div>
+
+              <form onSubmit={handleUpdatePassword} className="space-y-4">
+                <div>
+                  <label className="block text-white/70 text-sm mb-2">Nova Senha</label>
+                  <div className="relative">
+                    <input type={showPassword ? "text" : "password"} className={inputClass} autoFocus
+                      value={newPassword} onChange={(e) => { setNewPassword(e.target.value); setErrors({}); }} />
+                    <button type="button" className="absolute right-3 top-1/2 -translate-y-1/2 text-white/40 hover:text-white transition-colors" onClick={() => setShowPassword(!showPassword)}>
+                      {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                    </button>
+                  </div>
+                  <div className="mt-3 flex flex-col gap-1 text-sm">
+                    <span className={newPassword.length >= 8 ? "text-green-400" : "text-white/60"}>• Mínimo de 8 caracteres</span>
+                    <span className={/[A-Z]/.test(newPassword) ? "text-green-400" : "text-white/60"}>• Letra maiúscula</span>
+                    <span className={/[0-9]/.test(newPassword) ? "text-green-400" : "text-white/60"}>• Número</span>
+                    <span className={/[^A-Za-z0-9]/.test(newPassword) ? "text-green-400" : "text-white/60"}>• Caractere especial (!, #, @, etc)</span>
+                  </div>
+                  {errors.newPassword && <p className="text-[#E80070] text-xs mt-2">{errors.newPassword}</p>}
+                </div>
+
+                <div>
+                  <label className="block text-white/70 text-sm mb-2">Confirmar Nova Senha</label>
+                  <div className="relative">
+                    <input type={showPassword ? "text" : "password"} className={inputClass}
+                      value={confirmNewPassword} onChange={(e) => { setConfirmNewPassword(e.target.value); setErrors({}); }} />
+                  </div>
+                  {errors.confirmNewPassword && <p className="text-[#E80070] text-xs mt-2">{errors.confirmNewPassword}</p>}
+                </div>
+
+                <MagneticButton type="submit" className="w-full justify-center" disabled={isLoading}>
+                  {isLoading ? "Salvando..." : <><Check size={18}/> Salvar nova senha</>}
+                </MagneticButton>
+              </form>
+            </div>
+
           ) : (
             /* --- TELA DE CADASTRO (MULTI-STEP) --- */
             <form onSubmit={(e) => { e.preventDefault(); handleNextStep(); }} className={`transition-all duration-300 ${animating ? "opacity-0 translate-x-4" : "opacity-100 translate-x-0"}`}>
