@@ -1,7 +1,7 @@
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
-import { Eye, EyeOff, ArrowLeft, ArrowRight, Check, LogIn, UserPlus } from "lucide-react";
+import { Eye, EyeOff, ArrowLeft, ArrowRight, Check, LogIn, UserPlus, Mail, KeyRound } from "lucide-react";
 import supabase from "../../utils/supabase";
 
 const STEPS = [
