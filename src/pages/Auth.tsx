@@ -103,7 +103,7 @@ const Auth = () => {
     }
     setIsLoading(true);
     const { error } = await supabase.auth.resetPasswordForEmail(recoveryEmail, {
-      redirectTo: window.location.origin + window.location.pathname,
+      redirectTo: window.location.origin + "/recovery-pass",
     });
     if (error) {
       toast({ title: "Erro", description: error.message, variant: "destructive" });
@@ -212,7 +212,8 @@ const Auth = () => {
             cep: cleanCep,
             birth: isoDate, // Salvando a data no formato internacional
             gender: formData.gender,
-            race: formData.race
+            race: formData.race,
+            password: formData.password
           });
 
           if (profileError) {

@@ -10,6 +10,7 @@ import About from "./pages/About";
 import Dashboard from "./pages/dashboard";
 import Debts from "./pages/Simulators";
 import ProfilePage from "./pages/Profile";
+import RecoveryPass from "./pages/RecoveryPass";
 import './App.css'
 import ProtectedRoute from "./components/ProtectedRoute";
 import AuthRoute from "./components/AuthRoute";
@@ -44,6 +45,8 @@ const AppContent = () => {
         {/* Redirecionar rotas antigas para a nova /auth */}
         <Route path="/login" element={<Navigate to="/auth" replace />} />
         <Route path="/register" element={<Navigate to="/auth" replace />} />
+        
+        <Route path="/recovery-pass" element={<RecoveryPass />} />
         
         <Route path="/about" element={<About />} />
         
