@@ -47,6 +47,7 @@ const AppContent = () => {
         <Route path="/register" element={<Navigate to="/auth" replace />} />
         
         <Route path="/recovery-pass" element={<RecoveryPass />} />
+        <Route path="/RecoveryPass" element={<RecoveryPass />} />
         
         <Route path="/about" element={<About />} />
         

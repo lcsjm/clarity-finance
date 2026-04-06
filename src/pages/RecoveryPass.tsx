@@ -1,7 +1,7 @@
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "@/hooks/use-toast";
-import { Eye, EyeOff, ArrowLeft, Check, KeyRound } from "lucide-react";
+import { Eye, EyeOff, ArrowLeft, Check, KeyRound, Loader2 } from "lucide-react";
 import supabase from "../../utils/supabase";
 
 const MagneticButton = ({ children, onClick, disabled, variant = "primary", className = "", type = "button" }: any) => {
@@ -30,6 +30,54 @@ const RecoveryPass = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [sessionReady, setSessionReady] = useState(false);
+  const [sessionError, setSessionError] = useState(false);
+
+  // Detectar e processar os tokens de recuperação da URL (enviados pelo Supabase via email)
+  useEffect(() => {
+    const handleRecoveryToken = async () => {
+      const hash = window.location.hash;
+
+      // Se há um fragment com access_token, processar a sessão
+      if (hash && hash.includes("access_token")) {
+        const params = new URLSearchParams(hash.substring(1));
+        const accessToken = params.get("access_token");
+        const refreshToken = params.get("refresh_token");
+
+        if (accessToken && refreshToken) {
+          const { error } = await supabase.auth.setSession({
+            access_token: accessToken,
+            refresh_token: refreshToken,
+          });
+
+          if (error) {
+            console.error("Erro ao restaurar sessão de recuperação:", error);
+            setSessionError(true);
+            toast({
+              title: "Link expirado ou inválido",
+              description: "Solicite um novo link de recuperação de senha.",
+              variant: "destructive",
+            });
+          } else {
+            // Limpa o hash da URL para ficar mais limpo
+            window.history.replaceState(null, "", window.location.pathname);
+            setSessionReady(true);
+          }
+          return;
+        }
+      }
+
+      // Se não tem token na URL, verificar se já existe uma sessão ativa (ex: PASSWORD_RECOVERY event)
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        setSessionReady(true);
+      } else {
+        setSessionError(true);
+      }
+    };
+
+    handleRecoveryToken();
+  }, []);
 
   const handleUpdatePassword = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -90,6 +138,42 @@ const RecoveryPass = () => {
   };
 
   const inputClass = "w-full bg-white/10 border border-white/25 rounded-xl px-4 py-3 text-white placeholder:text-white/40 focus:ring-2 focus:ring-[#E80070] outline-none transition-all";
+
+  // Estado de carregamento: verificando sessão
+  if (!sessionReady && !sessionError) {
+    return (
+      <div className="min-h-screen w-full flex items-center justify-center bg-slate-900 relative overflow-hidden">
+        <div className="absolute inset-0 auth-gradient-bg opacity-50" />
+        <div className="relative z-10 text-center">
+          <Loader2 size={40} className="animate-spin text-[#E80070] mx-auto mb-4" />
+          <p className="text-white/60">Verificando link de recuperação...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Estado de erro: link inválido ou expirado
+  if (sessionError) {
+    return (
+      <div className="min-h-screen w-full flex items-center justify-center bg-slate-900 relative overflow-hidden">
+        <div className="absolute inset-0 auth-gradient-bg opacity-50" />
+        <div className="relative z-10 w-full max-w-md mx-4">
+          <div className="backdrop-blur-xl bg-white/[0.08] border border-white/20 rounded-3xl p-8 shadow-2xl text-center">
+            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-red-500/10 flex items-center justify-center">
+              <KeyRound size={28} className="text-red-400" />
+            </div>
+            <h1 className="text-2xl font-bold text-white mb-2">Link Inválido</h1>
+            <p className="text-white/50 text-sm mb-6">
+              Este link de recuperação expirou ou é inválido. Solicite um novo link para redefinir sua senha.
+            </p>
+            <MagneticButton onClick={() => navigate("/auth")} className="w-full justify-center">
+              <ArrowLeft size={18} /> Voltar ao Login
+            </MagneticButton>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen w-full flex items-center justify-center bg-slate-900 relative overflow-hidden">

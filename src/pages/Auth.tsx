@@ -103,7 +103,7 @@ const Auth = () => {
     }
     setIsLoading(true);
     const { error } = await supabase.auth.resetPasswordForEmail(recoveryEmail, {
-      redirectTo: window.location.origin + "/recovery-pass",
+      redirectTo: "https://debtview.netlify.app/RecoveryPass",
     });
     if (error) {
       toast({ title: "Erro", description: error.message, variant: "destructive" });
